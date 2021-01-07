@@ -1,20 +1,63 @@
 package main
 
 import (
-	"io"
+	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
+	
+	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
 func hello(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, "Hello World")
-	io.WriteString(w, "Hello World!!!")
+	//..
+}
+
+func init() {
+	// loads values from .env into the system
+	if err := godotenv.Load(); err != nil {
+		log.Print("No .env file found")
+	}
 }
 
 func main() {
-	port := os.Getenv("PORT")
+//DB connecting
+	
+	HOST, _        := os.LookupEnv("HOST")
+	DB_PORT, _     := os.LookupEnv("DB_PORT")
+	USER, _        := os.LookupEnv("PROFILE")
+	PASS, _        := os.LookupEnv("PASSWORD")
+	DB_NAME, _     := os.LookupEnv("DB_NAME")
+	
+	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+
+		"password=%s dbname=%s sslmode=require",
+		HOST, DB_PORT, USER, PASS, DB_NAME)
+	
+	fmt.Println(psqlInfo)
+	
+	db, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+	
+	err = db.Ping()
+	if err != nil {
+		panic(err)
+	}
+//---//
+	
+	
+	
+//Routes handler
 	http.HandleFunc("/", hello)
-	log.Print("Listening on :" + port)
+	
+	
+	
+//Starting server
+	port := os.Getenv("PORT")
+	log.Print("Listening on :" + port) //simple log
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
