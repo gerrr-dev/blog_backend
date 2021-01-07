@@ -12,7 +12,7 @@ import (
 )
 
 func hello(w http.ResponseWriter, r *http.Request) {
-	//..
+	fmt.Fprintf(w, `Doctrina`)
 }
 
 func init() {
@@ -35,8 +35,6 @@ func main() {
 		"password=%s dbname=%s sslmode=require",
 		HOST, DB_PORT, USER, PASS, DB_NAME)
 	
-	fmt.Println(psqlInfo)
-	
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		panic(err)
@@ -57,7 +55,7 @@ func main() {
 	
 	
 //Starting server
-	port := os.Getenv("PORT")
+	port, _ := os.LookupEnv("PORT")
 	log.Print("Listening on :" + port) //simple log
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
