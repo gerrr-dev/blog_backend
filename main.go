@@ -44,7 +44,9 @@ func main() {
 	err = db.Ping()
 	if err != nil {
 		panic(err)
-	}
+	}  
+	
+	
 //---//
 	
 	
