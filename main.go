@@ -1,61 +1,25 @@
 package main
 
 import (
-	"database/sql"
-	"fmt"
-	"log"
-	"net/http"
-	"os"
+	"github.com/gin-gonic/gin"
 	
-	"github.com/joho/godotenv"
-	_ "github.com/lib/pq"
+	"github.com/gerrr/blog_backend/blog_backend/controllers"
+	"github.com/gerrr/blog_backend/blog_backend/models"
 )
 
-func hello(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, `Doctrina`)
-}
-
-func init() {
-	// loads values from .env into the system
-	if err := godotenv.Load(); err != nil {
-		log.Print("No .env file found")
-	}
-}
-
 func main() {
-//DB connecting
+	r := gin.Default()
 	
-	HOST, _        := os.LookupEnv("HOST")
-	DB_PORT, _     := os.LookupEnv("DB_PORT")
-	USER, _        := os.LookupEnv("PROFILE")
-	PASS, _        := os.LookupEnv("PASSWORD")
-	DB_NAME, _     := os.LookupEnv("DB_NAME")
+	//Trying to connect the DB
+	models.ConnectDataBase()
 	
-	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+
-		"password=%s dbname=%s sslmode=require",
-		HOST, DB_PORT, USER, PASS, DB_NAME)
+	//Routes
+	r.GET("/books", controllers.FindBooks)
+	r.POST("/books", controllers.CreateBook)
+	r.GET("/books/:id", controllers.FindBook)
+	r.PATCH("/books/:id", controllers.UpdateBook)
+	r.DELETE("/books/:id", controllers.DeleteBook)
 	
-	db, err := sql.Open("postgres", psqlInfo)
-	if err != nil {
-		panic(err)
-	}
-	defer db.Close()
-	
-	err = db.Ping()
-	if err != nil {
-		panic(err)
-	}  
-//---//
-	
-	
-	
-//Routes handler
-	http.HandleFunc("/", hello)
-	
-	
-	
-//Starting server
-	port, _ := os.LookupEnv("PORT")
-	log.Print("Listening on :" + port) //simple log
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	//Starting API server
+	r.Run()
 }
