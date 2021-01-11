@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	
-	"github.com/gerrr/blog_backend/blog_backend/controllers"
-	"github.com/gerrr/blog_backend/blog_backend/models"
+	"github.com/gerrr/blog_backend/controllers"
+	"github.com/gerrr/blog_backend/models"
 )
 
 func main() {
@@ -14,6 +14,8 @@ func main() {
 	models.ConnectDataBase()
 	
 	//Routes
+	r.GET("/", controllers.Hello)
+	
 	r.GET("/books", controllers.FindBooks)
 	r.POST("/books", controllers.CreateBook)
 	r.GET("/books/:id", controllers.FindBook)
