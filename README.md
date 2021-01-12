@@ -11,13 +11,13 @@
 ## Installation
 
 > First step, u need to clone this repo. Use this command
-```go 
-go get github.com/gerrronimo/out-articles-api   
-```
+>```go 
+>go get github.com/gerrronimo/out-articles-api   
+>```
 > or
-```go 
-go get  
-```
+>```go 
+>go get  
+>```
 
 >After u need to edit .env file. Replace the values of all rows with your database data and go to CL back
 >```go
