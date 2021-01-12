@@ -18,7 +18,6 @@
 >```go 
 >go get  
 >```
-
 >After u need to edit .env file. Replace the values of all rows with your database data and go to CL back
 >```go
 >go run main.go
