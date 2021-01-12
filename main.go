@@ -8,20 +8,18 @@ import (
 )
 
 func main() {
+	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 	
 	//Trying to connect the DB
 	models.ConnectDataBase()
 	
 	//Routes
-	r.GET("/", controllers.Hello)
-	
-	r.GET("/books", controllers.FindBooks)
-	r.POST("/books", controllers.CreateBook)
-	r.GET("/books/:id", controllers.FindBook)
-	r.PATCH("/books/:id", controllers.UpdateBook)
-	r.DELETE("/books/:id", controllers.DeleteBook)
+	r.GET("/articles", controllers.AllArticles)
+	r.POST("/articles", controllers.CreateArticle)
+	r.GET("/article/:id", controllers.FindArticle)
+	r.DELETE("/article/:id", controllers.DeleteArticle)
 	
 	//Starting API server
-	r.Run()
+	_ = r.Run()
 }
