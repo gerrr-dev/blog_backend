@@ -22,3 +22,14 @@
 >```go
 >go run main.go
 >```
+
+### Basic Routes
+`/articles (GET)`
+Get All Articles
+`/articles (POST)`
+CREATE article 
+`/article/:id (GET)`
+Get once article
+`/article/:id (DELETE)`
+Delete article
+
